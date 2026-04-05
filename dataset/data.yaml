@@ -1,0 +1,22 @@
+names:
+- '10'
+- '100'
+- '20'
+- '200'
+- '2000'
+- '5'
+- '50'
+- '500'
+- None
+- '1'
+- '2'
+nc: 11
+path: D:\Code Space\Curency_Detection\dataset
+roboflow:
+  license: CC BY 4.0
+  project: indian-currency-notes
+  url: https://universe.roboflow.com/omkar-patkar-fes59/indian-currency-notes/dataset/2
+  version: 2
+  workspace: omkar-patkar-fes59
+train: train/images
+val: valid/images
