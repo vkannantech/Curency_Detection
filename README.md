@@ -161,6 +161,32 @@ python scripts/run_camera.py --weights models/best.pt --source 0 --profile pi --
 
 If you use the Raspberry Pi Camera Module, make sure OpenCV can access the camera on your OS image. If needed, use `libcamera`-enabled images and test camera access first.
 
+## Web Demo Deployment
+
+This repo also includes a simple Gradio demo in [app.py](/d:/Code%20Space/Curency_Detection/app.py) so you can publish an online image-upload version of the project.
+
+Local run:
+
+```powershell
+pip install -r requirements-web.txt
+python app.py
+```
+
+Good hosting options:
+
+- Hugging Face Spaces
+- Render
+- Railway
+
+For Hugging Face Spaces:
+
+1. Create a new `Gradio` Space
+2. Upload this repo
+3. Use [requirements-web.txt](/d:/Code%20Space/Curency_Detection/requirements-web.txt)
+4. Keep `app.py` as the main entry file
+
+Note: the full real-time webcam + speech assistant is best for desktop or Raspberry Pi. The web app is mainly for online demo and project presentation.
+
 ## Dataset Layout
 
 Follow standard YOLO detection format:
