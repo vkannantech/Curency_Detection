@@ -13,6 +13,7 @@ DATASET_CONFIG = ROOT_DIR / "dataset" / "data.yaml"
 @dataclass(slots=True)
 class CameraConfig:
     weights: str
+    engine: str = "auto"
     source: str = "0"
     imgsz: int = 640
     conf: float = 0.5

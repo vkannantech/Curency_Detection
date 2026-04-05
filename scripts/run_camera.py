@@ -12,13 +12,37 @@ SRC_DIR = ROOT_DIR / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from currency_detection.camera import CurrencyCameraAssistant, validate_weights_path
+from currency_detection.camera import CurrencyCameraAssistant, validate_engine, validate_weights_path
 from currency_detection.config import CameraConfig
+from currency_detection.engine import backend_cli_help
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run real-time currency detection on a camera.")
     parser.add_argument("--weights", required=True, help="Path to trained weights or Ultralytics model name.")
+    parser.add_argument(
+        "--engine",
+        default="auto",
+        choices=[
+            "auto",
+            "pytorch",
+            "onnx",
+            "openvino",
+            "torchscript",
+            "tensorrt",
+            "tflite",
+            "edgetpu",
+            "pb",
+            "saved_model",
+            "ncnn",
+            "mnn",
+            "imx",
+            "rknn",
+            "coreml",
+            "paddle",
+        ],
+        help="Inference engine to use. 'auto' detects from the weights format.",
+    )
     parser.add_argument("--source", default="0", help="Camera index, video path, or stream URL.")
     parser.add_argument(
         "--profile",
@@ -41,6 +65,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--smoothing-window", type=int, default=12, help="Frames to use for temporal consensus.")
     parser.add_argument("--stable-ratio", type=float, default=0.5, help="Fraction of history required to validate a class.")
     parser.add_argument("--min-confidence-sum", type=float, default=1.2, help="Minimum accumulated confidence across the window.")
+    parser.add_argument("--list-engines", action="store_true", help="Print supported engines and exit.")
     return parser.parse_args()
 
 
@@ -60,8 +85,15 @@ def apply_profile_defaults(args: argparse.Namespace) -> argparse.Namespace:
 
 def main() -> None:
     args = apply_profile_defaults(parse_args())
+    if args.list_engines:
+        print(backend_cli_help())
+        return
+
+    weights = validate_weights_path(args.weights)
+    validate_engine(weights, args.engine)
     config = CameraConfig(
-        weights=validate_weights_path(args.weights),
+        weights=weights,
+        engine=args.engine,
         source=args.source,
         imgsz=args.imgsz,
         conf=args.conf,

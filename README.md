@@ -187,6 +187,54 @@ For Hugging Face Spaces:
 
 Note: the full real-time webcam + speech assistant is best for desktop or Raspberry Pi. The web app is mainly for online demo and project presentation.
 
+## Multi-Engine Runtime Support
+
+The camera assistant can now run with multiple exported model engines through the same Python code path.
+
+Supported `--engine` values:
+
+- `auto`
+- `pytorch`
+- `onnx`
+- `openvino`
+- `torchscript`
+- `tensorrt`
+- `tflite`
+- `edgetpu`
+- `pb`
+- `saved_model`
+- `ncnn`
+- `mnn`
+- `imx`
+- `rknn`
+- `coreml`
+- `paddle`
+
+Examples:
+
+```powershell
+python scripts/run_camera.py --weights last.pt --engine auto --source 0 --speak
+python scripts/run_camera.py --weights exports\\best.onnx --engine onnx --source 0 --profile pi
+python scripts/run_camera.py --weights exports\\openvino_model --engine openvino --source 0 --profile pi-lite
+```
+
+This keeps the same preprocessing, temporal smoothing, speech, and total-value logic across all supported runtimes.
+
+Additional backend tools:
+
+- [list_engines.py](/d:/Code%20Space/Curency_Detection/scripts/list_engines.py)
+- [export_all.py](/d:/Code%20Space/Curency_Detection/scripts/export_all.py)
+- [benchmark_backends.py](/d:/Code%20Space/Curency_Detection/scripts/benchmark_backends.py)
+
+Examples:
+
+```powershell
+python scripts/list_engines.py --target pi
+python scripts/export_all.py --weights last.pt --target pi
+python scripts/benchmark_backends.py --weights last.pt exports\best.onnx --image sample.jpg --runs 10
+python scripts/run_camera.py --weights exports\best.onnx --engine onnx --source 0 --profile pi
+```
+
 ## Dataset Layout
 
 Follow standard YOLO detection format:

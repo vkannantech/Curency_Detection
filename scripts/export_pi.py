@@ -12,7 +12,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--format",
         default="onnx",
-        choices=["onnx", "openvino", "torchscript"],
+        choices=["onnx", "openvino", "torchscript", "engine", "tflite", "ncnn", "mnn", "paddle"],
         help="Export format for deployment.",
     )
     parser.add_argument("--imgsz", type=int, default=640, help="Export image size.")
